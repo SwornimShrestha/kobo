@@ -106,9 +106,15 @@
 
 // export default AvailableSurveysDetails;
 
-import { Table } from "@mantine/core";
+import { Button, Table } from "@mantine/core";
 import React, { useEffect, useState, useMemo } from "react";
 import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
+import {
+  IconArrowRight,
+  IconDownload,
+  IconFileExcel,
+  IconPhoto,
+} from "@tabler/icons-react";
 
 const AvailableSurveysDetails = ({ surveyId }) => {
   const [surveyDetails, setSurveyDetails] = useState(null);
@@ -207,10 +213,28 @@ const AvailableSurveysDetails = ({ surveyId }) => {
   return (
     <div>
       {surveyDetails ? (
-        <div className="text-end mb-4">
+        <div className="text-end mb-4 flex flex-col justify-end content-center gap-5">
           <p>
             <strong>No of data Submitted:</strong> {surveyDetails.count}
           </p>
+          <div className="text-end mb-4 flex justify-end content-center gap-2">
+            <Button
+              color="green"
+              variant=""
+              leftSection={<IconFileExcel size={14} />}
+              rightSection={<IconDownload size={14} />}
+            >
+              Excel{" "}
+            </Button>
+            <Button
+              color="blue"
+              variant=""
+              leftSection={<IconFileExcel size={14} />}
+              rightSection={<IconDownload size={14} />}
+            >
+              XML{" "}
+            </Button>
+          </div>
         </div>
       ) : (
         <p>No details available.</p>
