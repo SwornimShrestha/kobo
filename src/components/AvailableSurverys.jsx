@@ -29,9 +29,9 @@ const AvailableSurverys = ({ onSurveySelect }) => {
     }
   };
 
-  const handleSurveySelect = (uid) => {
+  const handleSurveySelect = (uid, index) => {
     setSelectedSurvey(uid);
-    onSurveySelect(uid);
+    onSurveySelect(uid, index);
   };
 
   return (
@@ -45,14 +45,14 @@ const AvailableSurverys = ({ onSurveySelect }) => {
         {data.map((item, index) => (
           <div
             key={index}
-            onClick={() => handleSurveySelect(item.uid)}
+            onClick={() => handleSurveySelect(item.uid, index)}
             className={`border shadow-md p-2 rounded-lg mb-2 cursor-pointer ${
               selectedSurvey === item.uid
                 ? "bg-blue-500 text-white"
                 : "hover:bg-black/10"
-            }`} // Apply active color when selected
+            }`}
           >
-            <h1>{item.name}</h1>
+            <h1>{item.name}</h1>d
             <h4 className="text-sm">{item.settings?.sector?.value || "N/A"}</h4>
           </div>
         ))}

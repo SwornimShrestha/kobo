@@ -4,9 +4,10 @@ import AvailableSurveysDetails from "./AvailableSurveysDetails";
 
 const DashboardLayout = () => {
   const [selectedSurveyId, setSelectedSurveyId] = useState(null);
-
-  const handleSurveySelection = (id) => {
+  const [selectedIndex, setselectedIndex] = useState(null);
+  const handleSurveySelection = (id, index) => {
     setSelectedSurveyId(id);
+    setselectedIndex(index);
   };
 
   return (
@@ -26,7 +27,10 @@ const DashboardLayout = () => {
             Survey Details
           </h2>
           {selectedSurveyId ? (
-            <AvailableSurveysDetails surveyId={selectedSurveyId} />
+            <AvailableSurveysDetails
+              surveyId={selectedSurveyId}
+              index={selectedIndex}
+            />
           ) : (
             <p>Select a survey from the left to view details.</p>
           )}

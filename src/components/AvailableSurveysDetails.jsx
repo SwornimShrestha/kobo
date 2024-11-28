@@ -116,8 +116,9 @@ import {
   IconPhoto,
 } from "@tabler/icons-react";
 
-const AvailableSurveysDetails = ({ surveyId }) => {
+const AvailableSurveysDetails = ({ surveyId, index }) => {
   const [surveyDetails, setSurveyDetails] = useState(null);
+  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -125,7 +126,30 @@ const AvailableSurveysDetails = ({ surveyId }) => {
     if (surveyId) {
       fetchSurveyDetails(surveyId);
     }
+    fetchData();
   }, [surveyId]);
+  const fetchData = async () => {
+    try {
+      const res = await fetch(`/api/v2/assets.json`, {
+        headers: {
+          Authorization: `Token e9218ca8da90d8b169ca284cc84ead3bfc81de01`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
+      const json = await res.json();
+      setData(json.results[index] || []);
+      console.log(index);
+      console.log(json.results[index].name);
+      console.log(data.downloads[0].url);
+    } catch (err) {
+      console.error("Error fetching data:", err);
+      setError(err.message);
+    }
+  };
 
   const fetchSurveyDetails = async (id) => {
     try {
@@ -218,22 +242,28 @@ const AvailableSurveysDetails = ({ surveyId }) => {
             <strong>No of data Submitted:</strong> {surveyDetails.count}
           </p>
           <div className="text-end mb-4 flex justify-end content-center gap-2">
-            <Button
-              color="green"
-              variant=""
-              leftSection={<IconFileExcel size={14} />}
-              rightSection={<IconDownload size={14} />}
-            >
-              Excel{" "}
-            </Button>
-            <Button
-              color="blue"
-              variant=""
-              leftSection={<IconFileExcel size={14} />}
-              rightSection={<IconDownload size={14} />}
-            >
-              XML{" "}
-            </Button>
+            <a href={data.downloads[0].url} target="_blank">
+              {" "}
+              <Button
+                color="green"
+                variant=""
+                leftSection={<IconFileExcel size={14} />}
+                rightSection={<IconDownload size={14} />}
+              >
+                Excel{" "}
+              </Button>
+            </a>
+            <a href={data.downloads[1].url} target="_blank">
+              {" "}
+              <Button
+                color="blue"
+                variant=""
+                leftSection={<IconFileExcel size={14} />}
+                rightSection={<IconDownload size={14} />}
+              >
+                XML{" "}
+              </Button>
+            </a>
           </div>
         </div>
       ) : (
