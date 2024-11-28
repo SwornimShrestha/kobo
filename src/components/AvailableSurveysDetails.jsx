@@ -191,6 +191,11 @@ const AvailableSurveysDetails = ({ surveyId }) => {
   const table = useMantineReactTable({
     columns,
     data: tableData,
+    enableDensityToggle: false,
+    initialState: {
+      pagination: { pageIndex: 0, pageSize: 5 },
+      density: "xs",
+    },
   });
 
   if (!surveyId) return <div>Please select a survey to view its details.</div>;
