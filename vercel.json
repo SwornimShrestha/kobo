@@ -1,0 +1,9 @@
+{
+      "rewrites": [
+        {
+          "source": "/api/:path*", 
+          "destination": "https://kf.kobotoolbox.org/api/:path*"
+        }
+      ]
+    }
+    
