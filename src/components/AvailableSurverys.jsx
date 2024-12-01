@@ -52,7 +52,7 @@ const AvailableSurverys = ({ onSurveySelect }) => {
                 : "hover:bg-black/10"
             }`}
           >
-            <h1>{item.name}</h1>d
+            <h1>{item.name}</h1>
             <h4 className="text-sm">{item.settings?.sector?.value || "N/A"}</h4>
           </div>
         ))}
