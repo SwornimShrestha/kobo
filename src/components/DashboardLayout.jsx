@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import AvailableSurverys from "./AvailableSurverys";
-import AvailableSurveysDetails from "./AvailableSurveysDetails";
-
+import React, { Suspense, useState } from "react";
+const AvailableSurverys = React.lazy(() => import("./AvailableSurverys"));
+const AvailableSurveysDetails = React.lazy(() =>
+  import("./AvailableSurveysDetails")
+);
 const DashboardLayout = () => {
   const [selectedSurveyId, setSelectedSurveyId] = useState(null);
   const [selectedIndex, setselectedIndex] = useState(null);
@@ -18,7 +19,9 @@ const DashboardLayout = () => {
           <h2 className="text-xl font-semibold mb-4 text-center">
             Available Surveys
           </h2>
-          <AvailableSurverys onSurveySelect={handleSurveySelection} />
+          <Suspense fallback={<div>Loading...</div>}>
+            <AvailableSurverys onSurveySelect={handleSurveySelection} />
+          </Suspense>
         </div>
 
         {/* right side surcey div */}
@@ -27,10 +30,12 @@ const DashboardLayout = () => {
             Survey Details
           </h2>
           {selectedSurveyId ? (
-            <AvailableSurveysDetails
-              surveyId={selectedSurveyId}
-              index={selectedIndex}
-            />
+            <Suspense fallback={<div>Loading.....</div>}>
+              <AvailableSurveysDetails
+                surveyId={selectedSurveyId}
+                index={selectedIndex}
+              />
+            </Suspense>
           ) : (
             <p>Select a survey from the left to view details.</p>
           )}

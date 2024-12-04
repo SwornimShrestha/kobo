@@ -1,19 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { ApiConfigContext } from "../context/ApiConfigContext";
+import { useNavigate } from "react-router-dom";
 
 const AvailableSurverys = ({ onSurveySelect }) => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
-  const [selectedSurvey, setSelectedSurvey] = useState(null); // To track the selected survey
+  const [selectedSurvey, setSelectedSurvey] = useState(null);
+  const { apiconfig, clearLocalStorage } = useContext(ApiConfigContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
   }, []);
+  console.log(apiconfig?.apikey);
+  console.log(apiconfig?.baseUrl);
 
   const fetchData = async () => {
     try {
-      const res = await fetch(`/api/v2/assets.json`, {
+      const res = await fetch(`/${apiconfig?.baseUrl}.json`, {
         headers: {
-          Authorization: `Token e9218ca8da90d8b169ca284cc84ead3bfc81de01`,
+          Authorization: `Token ${apiconfig?.apikey}`,
         },
       });
 
@@ -33,7 +39,10 @@ const AvailableSurverys = ({ onSurveySelect }) => {
     setSelectedSurvey(uid);
     onSurveySelect(uid, index);
   };
-
+  const handleClear = () => {
+    clearLocalStorage();
+    navigate("/");
+  };
   return (
     <div>
       {error && (
@@ -56,6 +65,9 @@ const AvailableSurverys = ({ onSurveySelect }) => {
             <h4 className="text-sm">{item.settings?.sector?.value || "N/A"}</h4>
           </div>
         ))}
+        <h1 onClick={handleClear} className="text-red-400">
+          clear
+        </h1>
       </div>
     </div>
   );

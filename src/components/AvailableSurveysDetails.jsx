@@ -1,58 +1,58 @@
 import { Button } from "@mantine/core";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useContext } from "react";
 import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
 import { IconDownload, IconFileExcel } from "@tabler/icons-react";
+import { ApiConfigContext } from "../context/ApiConfigContext";
 
 const AvailableSurveysDetails = ({ surveyId, index }) => {
   const [surveyDetails, setSurveyDetails] = useState(null);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const { apiconfig } = useContext(ApiConfigContext);
   useEffect(() => {
     if (surveyId) {
       fetchSurveyDetails(surveyId);
     }
-    fetchData();
   }, [surveyId, index]);
 
-  const fetchData = async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
+  // const fetchData = async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     setError(null);
 
-      const res = await fetch(`/api/v2/assets.json`, {
-        headers: {
-          Authorization: `Token e9218ca8da90d8b169ca284cc84ead3bfc81de01`,
-        },
-      });
+  //     const res = await fetch(`/api/v2/assets.json`, {
+  //       headers: {
+  //         Authorization: `Token e9218ca8da90d8b169ca284cc84ead3bfc81de01`,
+  //       },
+  //     });
 
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
+  //     if (!res.ok) {
+  //       throw new Error(`HTTP error! status: ${res.status}`);
+  //     }
 
-      const json = await res.json();
+  //     const json = await res.json();
 
-      const newData = json?.results?.[index] || [];
-      setData(newData);
+  //     const newData = json?.results?.[index] || [];
+  //     setData(newData);
 
-      console.log("Fetched Data:", json);
-      console.log("Updated Data State:", newData);
-    } catch (err) {
-      console.error("Error fetching data:", err);
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //     console.log("Fetched Data:", json);
+  //     console.log("Updated Data State:", newData);
+  //   } catch (err) {
+  //     console.error("Error fetching data:", err);
+  //     setError(err.message);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const fetchSurveyDetails = async (id) => {
     try {
       setIsLoading(true);
       setError(null);
-      const res = await fetch(`/api/v2/assets/${id}/data.json`, {
+      const res = await fetch(`/${apiconfig?.baseUrl}/${id}/data.json`, {
         headers: {
-          Authorization: `Token e9218ca8da90d8b169ca284cc84ead3bfc81de01`,
+          Authorization: `Token ${apiconfig?.apikey}`,
         },
       });
 
@@ -122,9 +122,9 @@ const AvailableSurveysDetails = ({ surveyId, index }) => {
     },
   });
 
-  useEffect(() => {
-    console.log("Data state updated:", data);
-  }, [data]);
+  // useEffect(() => {
+  //   console.log("Data state updated:", data);
+  // }, [data]);
 
   if (!surveyId) return <div>Please select a survey to view its details.</div>;
   if (isLoading) return <div>Loading details...</div>;
@@ -139,7 +139,7 @@ const AvailableSurveysDetails = ({ surveyId, index }) => {
           <p>
             <strong>No of data Submitted:</strong> {surveyDetails.count}
           </p>
-          <div className="text-end mb-4 flex justify-end content-center gap-2">
+          {/* <div className="text-end mb-4 flex justify-end content-center gap-2">
             <a href={data.downloads?.[0]?.url || "#"} target="_blank">
               <Button
                 color="green"
@@ -160,7 +160,7 @@ const AvailableSurveysDetails = ({ surveyId, index }) => {
                 XML
               </Button>
             </a>
-          </div>
+          </div> */}
         </div>
       ) : (
         <p>No details available.</p>
