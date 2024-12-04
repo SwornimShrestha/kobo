@@ -1,9 +1,11 @@
-import { Button, TextInput } from "@mantine/core";
+import { Badge, Group, rem, Button, TextInput } from "@mantine/core";
 import React, { useContext } from "react";
 import logo from "../assets/private-key-generator_14162116.gif";
 import { useForm } from "@mantine/form";
 import { ApiConfigContext } from "../context/ApiConfigContext";
 import { useNavigate } from "react-router-dom";
+import {} from "@mantine/core";
+import { IconAt, IconCopy } from "@tabler/icons-react";
 const ApiConfigurationForm = () => {
   const form = useForm({
     mode: "uncontrolled",
@@ -21,9 +23,17 @@ const ApiConfigurationForm = () => {
     console.log(values);
     navigate("/dashboard");
   };
+  const icon = <IconCopy style={{ width: rem(12), height: rem(12) }} />;
+
+  const handleTestCLick = () => {
+    console.log("ma click bhaye");
+    form.setFieldValue("apikey", "e9218ca8da90d8b169ca284cc84ead3bfc81de01");
+    form.setFieldValue("baseUrl", "api/v2/assets");
+    console.log(form.apikey);
+  };
   return (
     <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 mt-[4%]">
+      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 ">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img alt="Your Company" src={logo} className="mx-auto h-20 w-auto" />
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
@@ -57,10 +67,20 @@ const ApiConfigurationForm = () => {
               />
             </div>
 
-            <div>
+            <div className="flex flex-col gap-3 items-end">
               <Button type="submit" fullWidth>
                 Submit
               </Button>
+              <Badge
+                className=" cursor-pointer"
+                onClick={handleTestCLick}
+                leftSection={icon}
+                variant="light"
+                color="red"
+                radius="xs"
+              >
+                Test
+              </Badge>
             </div>
           </form>
 
